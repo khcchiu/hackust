@@ -18,8 +18,8 @@ def analysis(request):
         if form.is_valid():
             result = []
             locations = ['Towngas Cooking Centre', '三星台菜食堂 Tristar Kitchen', 'C.P.U. Cafe', 'Mini Friday', 'InterContinental Hong Kong', '東寶小館 Tung Po Kitchen']
-            for file in sorted([f for f in os.listdir('./main/images') if not f.startswith('.')]):
-                command = "./main/inference.py -image './main/images/{}'".format(file)
+            for file in sorted([f for f in os.listdir('./main/images/sample') if not f.startswith('.')]):
+                command = "./main/inference.py -image './main/images/sample/{}'".format(file)
                 print(command)
                 out = subprocess.check_output(command, shell=True)
                 result.append((str(out))[2:-3])
@@ -36,7 +36,10 @@ def analysis(request):
                 'json_data': json_data,
             })
             """
-            return HttpResponse(str(json_data))
+            #return HttpResponse(str(json_data))
+            return render(request, 'analysis_result.html', {
+
+            })
     else:
         form = AnalysisForm()
     return render(request, 'analysis.html', {
