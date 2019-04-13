@@ -24123,7 +24123,7 @@ ul li {
 
 @media (max-width: 767px) {
   .portfolio-grid figure {
-    width: 270px;
+    /* width: 270px; */
   }
 }
 
