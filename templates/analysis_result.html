@@ -38,7 +38,9 @@ for (var key in cat_data) {
     } else {
         selectedKey[key] = false;
     }
-    if ("{{dataset}}" == "1")
+    if ("{{dataset}}" == "1") {
+        selectedKey[key] = true;
+    }
     echart_data.push({
         "name": key,
         "value": cat_data[key],
