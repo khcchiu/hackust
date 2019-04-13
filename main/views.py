@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 from main.forms import *
 import os
@@ -28,12 +29,14 @@ def analysis(request):
             analysis.hashtag = form.cleaned_data.get('hashtag')
             json_data = json.dumps([{'food-category': food_category, 'location': location} for food_category, location in zip(result, locations)])
             print(json_data)
-
+            analysis.result = json_data
             analysis.save()
-            #TODO: Crawl and record data
+            """
             return render(request, 'analysis_result.html', {
                 'json_data': json_data,
             })
+            """
+            return HttpResponse(str(json_data))
     else:
         form = AnalysisForm()
     return render(request, 'analysis.html', {
