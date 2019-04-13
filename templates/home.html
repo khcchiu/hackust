@@ -1,1 +1,14 @@
-<h1>Hello World</h1>
+{%extends "base.html" %}
+
+{% block title %}Homepages{% endblock %}
+
+{% block mainbody %}
+<div class="row">
+    <div class="col-sm-6">
+        <button type="button" class="btn btn-lg">Management</button>
+    </div>
+    <div class="col-sm-6">
+        <button type="button" class="btn btn-lg">Human Resources</button>
+    </div>
+</div>
+{% endblock %}
