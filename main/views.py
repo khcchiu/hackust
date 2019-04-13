@@ -51,3 +51,6 @@ def analysis(request):
     return render(request, 'analysis.html', {
         'form': form,
     })
+
+def shift(request):
+    pass
