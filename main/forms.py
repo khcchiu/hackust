@@ -24,6 +24,6 @@ class AnalysisForm(forms.Form):
 class EventForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
-        self.fields['staff'] = forms.CharField(label='Which staff? ', widget=forms.Select(choices=[('StaffA', 'StaffA'), ('StaffB', 'StaffB'), ('StaffC', 'StaffC')]))
-        self.fields['start'] = forms.DateTimeField(initial=timezone.now(), required=False) 
+        self.fields['staff'] = forms.CharField(label='Staff', widget=forms.Select(choices=[('Alex', 'Alex'), ('Bob', 'Bob'), ('Candy', 'Candy')]))
+        self.fields['start'] = forms.DateTimeField(initial=timezone.now(), required=False)
         self.fields['end'] = forms.DateTimeField(initial=timezone.now(), required=False)

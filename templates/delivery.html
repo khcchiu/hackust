@@ -5,4 +5,9 @@
 
 {% block mainbody %}
     {{ img|safe }}
+    <script>
+        setTimeout(function(){
+            window.location.reload(1);
+        }, 3000);
+</script>
 {% endblock %}

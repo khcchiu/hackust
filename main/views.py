@@ -8,6 +8,7 @@ import os
 import subprocess
 import json
 import pycronofy
+import random
 
 cronofy = pycronofy.Client(access_token="7HIwG8LSBfGbVNRszgbxUu1d8-nfJMo_")
 calendar_id = 'cal_XLIvcZop-QDHVc4X_3FfAQIl3bLzzNsG4uuW1yA'
@@ -92,14 +93,13 @@ def shift(request):
     if request.method == "POST":
         form = EventForm(request.POST)
         if form.is_valid():
-            print('test2')
             event = {}
-            event['event_id'] = "qTtZdczOccgaPncGJaCiLg"
+            event['event_id'] = str(timezone.now())
             event['start'] = str(form.cleaned_data['start']).replace(' ', 'T', 1).replace('+00:00', 'Z', 1)
             print(str(form.cleaned_data['start']).replace(' ', 'T', 1))
             event['end'] = str(form.cleaned_data['end']).replace(' ', 'T', 1).replace('+00:00', 'Z', 1)
             print(str(form.cleaned_data['end']).replace('+00:00', 'Z', 1))
-            event['summary'] =  'Working'
+            event['summary'] =  form.cleaned_data['staff']
             event['description'] = 'Allocated time'
             event['tzid'] = 'Asia/Singapore'
             print(event)
@@ -107,9 +107,7 @@ def shift(request):
             mail_subject = 'Your allocated shift.'
             message = 'Here is your allocated time for work:\nStart: ' + event['start'].replace('T', ' ', 1).replace('+08:00', '', 1) + '\nEnd: ' + event['end'].replace('T', '', 1).replace('+08:00', '', 1)
             to_email = 'kennethchiuhc@gmail.com'
-            email = EmailMessage(
-                        mail_subject, message, to=[to_email]
-            )
+            email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
     else:
         form = EventForm()
@@ -219,20 +217,18 @@ def food_delivery(request):
 
         return G, nodePos
 
-    addFoodOrder(1000, -1, 2, time.time())
-    addFoodOrder(1001, 3, 8, time.time())
-    addFoodOrder(1002, 12, 6, time.time())
-    addFoodOrder(1003, -3, -3, time.time())
-    addFoodOrder(1004, 4, 17, time.time())
-    addFoodOrder(1005, 6, 0, time.time())
-    addFoodOrder(1006, 8, 1, time.time())
-    addFoodOrder(1007, 1, -2, time.time())
-    addFoodOrder(1008, 3, 2, time.time())
-    addFoodOrder(1009, -2, 2, time.time())
-    addFoodOrder(1010, 8, 9, time.time())
-    addFoodOrder(1011, -14, -3, time.time())
-    addFoodOrder(1012, 8, 7, time.time())
-    addFoodOrder(1013, 4, -3, time.time())
+    addFoodOrder(123, 3, 8, time.time())
+    addFoodOrder(223, 12, 6, time.time())
+    addFoodOrder(133, -3, -3, time.time())
+    addFoodOrder(104, 4, 17, time.time())
+    addFoodOrder(225, 6, 0, time.time())
+    addFoodOrder(346, 10, 4, time.time())
+    addFoodOrder(117, -1, 2, time.time())
+    addFoodOrder(128, -2, 7, time.time())
+    addFoodOrder(169, -4, 1, time.time())
+
+    for i in range(10, 11):
+        addFoodOrder(random.randint(100, 300), random.randint(-5,5), random.randint(-5,5), time.time())
 
     nodePos = constructPos()
 
