@@ -10,7 +10,20 @@
 <form action="" method="POST">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Submit">
+    <div id="loading">
+        <div class="jumping-dots-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <button onclick="load_and_submit(this)">Submit</button>
 </form>
+<script>
+    $("#loading").hide();
+    function load_and_submit(myform) {
+        $("#loading").show();
+    }
+</script>
 
 {% endblock %}
