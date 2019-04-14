@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.utils import timezone
+from django.core.mail import EmailMessage
 
 from main.forms import *
 import os
@@ -82,7 +84,33 @@ def shift(request):
     }
     cronofy.upsert_event(calendar_id=calendar_id, event=event)
     """
-    return render(request, 'shift.html')
+    if request.method == "POST":
+        form = EventForm(request.POST)
+        if form.is_valid():
+            print('test2')
+            event = {}
+            event['event_id'] = "qTtZdczOccgaPncGJaCiLg"
+            event['start'] = str(form.cleaned_data['start']).replace(' ', 'T', 1).replace('+00:00', 'Z', 1)
+            print(str(form.cleaned_data['start']).replace(' ', 'T', 1))
+            event['end'] = str(form.cleaned_data['end']).replace(' ', 'T', 1).replace('+00:00', 'Z', 1)
+            print(str(form.cleaned_data['end']).replace('+00:00', 'Z', 1))
+            event['summary'] =  'Working'
+            event['description'] = 'Allocated time'
+            event['tzid'] = 'Asia/Singapore'
+            print(event)
+            cronofy.upsert_event(calendar_id=calendar_id, event=event)
+            mail_subject = 'Your allocated shift.'
+            message = 'Here is your allocated time for work:\nStart: ' + event['start'].replace('T', ' ', 1).replace('+08:00', '', 1) + '\nEnd: ' + event['end'].replace('T', '', 1).replace('+08:00', '', 1)
+            to_email = 'kennethchiuhc@gmail.com'
+            email = EmailMessage(
+                        mail_subject, message, to=[to_email]
+            )
+            email.send()
+    else:
+        form = EventForm()
+    return render(request, 'shift.html', {
+        'form': form,
+    })
 
 def availability_rule(request):
     return render(request, 'availability_rule.html')
