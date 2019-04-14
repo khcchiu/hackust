@@ -1,0 +1,36 @@
+<div id="cronofy-availability-viewer"></div>
+<script src="https://elements.cronofy.com/js/CronofyElements.v0.8.1.js"></script>
+<script>
+    CronofyElements.AvailabilityViewer({
+        token: "ELEMENT_TOKEN",
+        target: 'cronofy-availability-viewer',
+        query: {
+            participants: [
+                {
+                    required: "all",
+                    members: [
+                        { sub: "acc_12345678" },
+                        { sub: "acc_87654321" }
+                    ]
+                }
+            ],
+            required_duration: { minutes: 60 },
+            available_periods: [
+                { start: "2019-04-14T09:00:00Z", end: "2019-04-14T17:00:00Z" },
+                { start: "2019-04-15T09:00:00Z", end: "2019-04-15T17:00:00Z" },
+                { start: "2019-04-16T09:00:00Z", end: "2019-04-16T17:00:00Z" },
+                { start: "2019-04-17T09:00:00Z", end: "2019-04-17T17:00:00Z" }
+            ],
+        },
+        extras: {
+            start_time:"09:00",
+            end_time: "15:30",
+            interval: 15
+        },
+        styles: {
+            useStyles: true,
+            prefix: "custom-name"
+        },
+        callback: slot => console.log('callback',slot),
+    });
+</script>

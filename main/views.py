@@ -5,6 +5,10 @@ from main.forms import *
 import os
 import subprocess
 import json
+import pycronofy
+
+cronofy = pycronofy.Client(access_token="7HIwG8LSBfGbVNRszgbxUu1d8-nfJMo_")
+calendar_id = 'cal_XLIvcZop-QDHVc4X_3FfAQIl3bLzzNsG4uuW1yA'
 
 # Create your views here.
 def home(request):
@@ -57,4 +61,31 @@ def analysis(request):
     })
 
 def shift(request):
-    pass
+    """
+    events = cronofy.read_events(
+        from_date='2019-04-14',
+        to_date='2019-04-19',
+        tzid='Etc/UTC')
+    print(events)
+    calendars = cronofy.list_calendars()
+    print(calendars)
+    event = {
+        'event_id': "qTtZdczOccgaPncGJaCiLg",
+        'summary': "Board meeting",
+        'description': "Discuss plans for the next quarter.",
+        'start': "2019-04-14T15:30:00Z",
+        'end': "2019-04-14T17:00:00Z",
+        'tzid': "Asia/Singapore",
+        'location': {
+            'description': "Board room"
+        }
+    }
+    cronofy.upsert_event(calendar_id=calendar_id, event=event)
+    """
+    return render(request, 'shift.html')
+
+def availability_rule(request):
+    return render(request, 'availability_rule.html')
+
+def availability_viewer(request):
+    return render(request, 'availability_viewer.html')
