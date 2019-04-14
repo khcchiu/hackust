@@ -16,6 +16,11 @@ def home(request):
 
     })
 
+def hr(request):
+    return render(request, 'hr.html', {
+
+    })
+
 def analysis(request):
     if request.POST:
         form = AnalysisForm(request.POST)

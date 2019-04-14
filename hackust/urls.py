@@ -24,6 +24,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('analysis/', analysis, name='analysis'),
+    path('hr/', hr, name='hr'),
     path('shift/', shift, name='shift'),
     path('shift/submit_availability', availability_rule, name='availability_rule'),
     path('shift/view_availability', availability_viewer, name='availability_viewer'),
