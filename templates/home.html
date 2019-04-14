@@ -4,52 +4,31 @@
 {% block title %}Homepages{% endblock %}
 
 {% block mainbody %}
-
-<div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
+<h1>Welcome</h1>
+<div class="row mt-4">
+    <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Marketing Department</h4>
                 <div class="row">
-                    <div class="col-md-5">
-                        <img class="img-fluid rounded" src="{% static 'marketing.png' %}" alt="tab preview">
-                    </div>
-                    <div class="col-md-7 pl-md-5 pt-4 pt-md-0 d-flex flex-column">
-                        <h5 class="mb-4">Food Trend Analysis</h5>
-                        <p>HaHAHAHAHA</p>
-                        <div class="mt-auto mb-5">
-                            <a href="{% url 'analysis' %}"><button type="button" class="btn btn-info btn-block">Enter System</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Human Resources Department</h4>
-                <div class="row">
-                    <div class="col-md-5">
-                        <img class="img-fluid rounded" src="{% static 'hr.jpg' %}" alt="tab preview">
-                    </div>
-                    <div class="col-md-7 pl-md-5 pt-4 pt-md-0 d-flex flex-column">
-                        <div>
-                            <h5>Driver Schedule</h5>
-                            <div>
-                                <p>HaHAHAHAHA</p>
-                                <div class="mt-auto">
-                                    <a href="{% url 'analysis' %}"><button type="button" class="btn btn-secondary btn-block">Enter System</button></a>
-                                </div>
+                    <div class="col-12">
+                        <div class="row portfolio-grid">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <figure class="effect-text-in" onclick="location.href = '{% url 'analysis' %}'">
+                                    <img src="{% static 'marketing.jpg' %}" alt="image"/>
+                                    <figcaption>
+                                        <h4>Marketing</h4>
+                                        <p>Predict current food trend by crawling social media images</p>
+                                    </figcaption>
+                                </figure>
                             </div>
-                        </div>
-                        <div class="mt-auto mb-4">
-                            <h5>Staff Schedule</h5>
-                            <div>
-                                <p>HaHAHAHAHA</p>
-                                <div class="mt-auto">
-                                    <a href="{% url 'analysis' %}"><button type="button" class="btn btn-secondary btn-block">Enter System</button></a>
-                                </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <figure class="effect-text-in">
+                                    <img src="{% static 'hr.jpg' %}" alt="image"/>
+                                    <figcaption>
+                                        <h4>Human Resources</h4>
+                                        <p>Smart scheduling system for riders and staff members</p>
+                                    </figcaption>
+                                </figure>
                             </div>
                         </div>
                     </div>
@@ -58,14 +37,69 @@
         </div>
     </div>
 </div>
-    <!--
-    <div class="row">
-        <div class="col-sm-6">
-            <button type="button" class="btn btn-lg">Human Resources</button>
-        </div>
-        <div class="col-sm-6">
-            <button type="button" class="btn btn-lg"><a href="{% url 'analysis' %}">Food Trend Analysis</a></button>
-        </div>
-    </div>
-    -->
-    {% endblock %}
+<!--
+<div class="row">
+<div class="col-md-12 grid-margin stretch-card">
+<div class="card">
+<div class="card-body">
+<h4 class="card-title">Marketing Department</h4>
+<div class="row">
+<div class="col-md-5">
+<img class="img-fluid rounded" src="{% static 'marketing.png' %}" alt="tab preview">
+</div>
+<div class="col-md-7 pl-md-5 pt-4 pt-md-0 d-flex flex-column">
+<h5 class="mb-4">Food Trend Analysis</h5>
+<p>HaHAHAHAHA</p>
+<div class="mt-auto mb-5">
+<a href="{% url 'analysis' %}"><button type="button" class="btn btn-info btn-block">Enter System</button></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-12 grid-margin stretch-card">
+<div class="card">
+<div class="card-body">
+<h4 class="card-title">Human Resources Department</h4>
+<div class="row">
+<div class="col-md-5">
+<img class="img-fluid rounded" src="{% static 'hr.jpg' %}" alt="tab preview">
+</div>
+<div class="col-md-7 pl-md-5 pt-4 pt-md-0 d-flex flex-column">
+<div>
+<h5>Driver Schedule</h5>
+<div>
+<p>HaHAHAHAHA</p>
+<div class="mt-auto">
+<a href="{% url 'analysis' %}"><button type="button" class="btn btn-secondary btn-block">Enter System</button></a>
+</div>
+</div>
+</div>
+<div class="mt-auto mb-4">
+<h5>Staff Schedule</h5>
+<div>
+<p>HaHAHAHAHA</p>
+<div class="mt-auto">
+<a href="{% url 'analysis' %}"><button type="button" class="btn btn-secondary btn-block">Enter System</button></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+-->
+<!--
+<div class="row">
+<div class="col-sm-6">
+<button type="button" class="btn btn-lg">Human Resources</button>
+</div>
+<div class="col-sm-6">
+<button type="button" class="btn btn-lg"><a href="{% url 'analysis' %}">Food Trend Analysis</a></button>
+</div>
+</div>
+-->
+{% endblock %}

@@ -21,7 +21,7 @@ from main.views import *
 from driver.views import *
 
 urlpatterns = [
-    path('', home),
+    path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('analysis/', analysis, name='analysis'),
     path('shift/', shift, name='shift'),

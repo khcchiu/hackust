@@ -1,89 +1,87 @@
-<!DOCTYPE html>
-<html style="height: 100%">
-<head>
-    <meta charset="utf-8">
-</head>
-<body style="height: 100%; margin: 0">
-    <div id="container" style="height: 100%"></div>
-</body>
-<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-<script type="text/javascript">
+{%extends "base.html" %}
+{% load static %}
 
-var dom = document.getElementById("container");
-var myChart = echarts.init(dom);
-var app = {};
+{% block title %}Homepages{% endblock %}
 
-var raw = {{ result|safe }};
+{% block mainbody %}
+    <div id="piechart" style="min-height: 80vh;"></div>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript">
+    var dom = document.getElementById("piechart");
+    var myChart = echarts.init(dom);
+    var app = {};
 
-var cat_data = {};
+    var raw = {{ result|safe }};
 
-for (var i = 0; i < raw.length; i++) {
-    var k = raw[i].toLowerCase();
-    k = k.replace(/_/g, " ");
-    k = k.charAt(0).toUpperCase() + k.slice(1);
-    if (cat_data[k] == null) {
-        cat_data[k] = 1;
-    } else {
-        cat_data[k]++;
+    var cat_data = {};
+
+    for (var i = 0; i < raw.length; i++) {
+        var k = raw[i].toLowerCase();
+        k = k.replace(/_/g, " ");
+        k = k.charAt(0).toUpperCase() + k.slice(1);
+        if (cat_data[k] == null) {
+            cat_data[k] = 1;
+        } else {
+            cat_data[k]++;
+        }
     }
-}
 
-var legendData = Object.keys(cat_data);
-var selectedKey = {};
-var echart_data = [];
+    var legendData = Object.keys(cat_data);
+    var selectedKey = {};
+    var echart_data = [];
 
-for (var key in cat_data) {
-    if (cat_data[key] >= 5) {
-        selectedKey[key] = true;
-    } else {
-        selectedKey[key] = false;
+    for (var key in cat_data) {
+        if (cat_data[key] >= 5) {
+            selectedKey[key] = true;
+        } else {
+            selectedKey[key] = false;
+        }
+        if ("{{dataset}}" == "1") {
+            selectedKey[key] = true;
+        }
+        echart_data.push({
+            "name": key,
+            "value": cat_data[key],
+        });
     }
-    if ("{{dataset}}" == "1") {
-        selectedKey[key] = true;
-    }
-    echart_data.push({
-        "name": key,
-        "value": cat_data[key],
-    });
-}
 
-option = {
-    title : {
-        text: 'Food category',
-        x:'center'
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: "{b} : {c} ({d}%)"
-    },
-    legend: {
-        type: 'scroll',
-        orient: 'vertical',
-        right: 10,
-        top: 20,
-        bottom: 20,
-        data: legendData,
-        selected: selectedKey
-    },
-    series : [
-        {
-            name: 'Food',
-            type: 'pie',
-            radius : '55%',
-            center: ['40%', '50%'],
-            data: echart_data,
-            itemStyle: {
-                emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+    option = {
+        title : {
+            text: 'Food category',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{b} : {c} ({d}%)"
+        },
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 10,
+            top: 20,
+            bottom: 20,
+            data: legendData,
+            selected: selectedKey
+        },
+        series : [
+            {
+                name: 'Food',
+                type: 'pie',
+                radius : '55%',
+                center: ['40%', '50%'],
+                data: echart_data,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
                 }
             }
-        }
-    ]
-};
+        ]
+    };
 
-myChart.setOption(option, true);
+    myChart.setOption(option, true);
+    </script>
 
-</script>
-</html>
+{% endblock %}
