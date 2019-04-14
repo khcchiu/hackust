@@ -94,3 +94,148 @@ def availability_rule(request):
 
 def availability_viewer(request):
     return render(request, 'availability_viewer.html')
+
+import networkx as nx
+from networkx.algorithms import community
+#import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+import math
+import time
+
+import io
+import urllib, base64
+
+def food_delivery(request):
+
+    class Vec2f():
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
+    #food order class
+    class FoodOrder():
+        def __init__(self, orderID, x, y, orderTime):
+            self.orderID = orderID
+            self.groupID = -1
+            #self.address
+            self.pos = Vec2f(x, y)
+            self.orderTime = orderTime
+            #self.remainTime = time + 30min
+
+        def printinfo(self):
+            print(self.orderID, self.groupID, self.pos.x, self.pos.y, time.strftime("%b %d %a %H:%M:%S", time.localtime(self.orderTime)))
+
+
+    center = Vec2f(0, 0)
+    foodOrders = []
+    G = nx.Graph()
+    #add center
+    G.add_node(0, id=-1)
+    #adj matrix
+    distMatrix = np.array([[0]])#[0]#numpy
+
+    def getVec2fDistance(v1, v2):
+        return math.sqrt((v1.x - v2.x)**2 + (v1.y - v2.y)**2)
+
+    def getNodeDistance(i, j): #center: < 0 #to check
+        #google map dist?
+        i -= 1
+        j -= 1
+
+        if (i < -1 or i >= len(foodOrders) or j < -1 or j >= len(foodOrders)):
+            print("getNodeDistance: invalid index")
+            return None
+        if i == -1:
+            return getVec2fDistance(center, foodOrders[j].pos)
+        if j == -1:
+            return getVec2fDistance(center, foodOrders[i].pos)
+        return getVec2fDistance(foodOrders[i].pos, foodOrders[j].pos)
+
+    def addFoodOrder(orderID, x, y, orderTime):
+        foodOrders.append(FoodOrder(orderID, x, y, orderTime))
+
+        nonlocal distMatrix
+
+        length = distMatrix.shape[0] + 1
+        distMatrix = np.append(distMatrix, np.zeros((length-1, 1)), axis=1)
+        distMatrix = np.append(distMatrix, np.zeros((1, length)), axis=0)
+
+        for i in range(length):
+            d = getNodeDistance(i, length-1)
+            distMatrix.itemset((i, length-1), d)
+            distMatrix.itemset((length-1, i), d)
+
+    def constructPos():
+        nodePos = np.zeros((len(foodOrders)+1, 2))
+        nodePos[0] = [center.x, center.y]
+
+        for i in range(len(foodOrders)):
+            nodePos[i + 1] = [foodOrders[i].pos.x, foodOrders[i].pos.y]
+
+        return nodePos
+
+    def constructGraph():
+        G = nx.Graph()
+        nodePos = {}
+
+        G.add_node(0, label="center")
+        nodePos[0] = (center.x, center.y)
+        for i in range(len(foodOrders)):
+            G.add_node(i+1, label=foodOrders[i].orderID)
+            nodePos[i+1] = (foodOrders[i].pos.x, foodOrders[i].pos.y)
+
+        [G.add_edge(i, j, weight=distMatrix[i, j]) for i in range(0, distMatrix.shape[1]) for j in range(i+1, distMatrix.shape[1])]
+
+        return G, nodePos
+
+    addFoodOrder(1000, -1, 2, time.time())
+    addFoodOrder(1001, 3, 8, time.time())
+    addFoodOrder(1002, 12, 6, time.time())
+    addFoodOrder(1003, -3, -3, time.time())
+    addFoodOrder(1004, 4, 17, time.time())
+    addFoodOrder(1005, 6, 0, time.time())
+    addFoodOrder(1006, 8, 1, time.time())
+    addFoodOrder(1007, 1, -2, time.time())
+    addFoodOrder(1008, 3, 2, time.time())
+    addFoodOrder(1009, -2, 2, time.time())
+    addFoodOrder(1010, 8, 9, time.time())
+    addFoodOrder(1011, -14, -3, time.time())
+    addFoodOrder(1012, 8, 7, time.time())
+    addFoodOrder(1013, 4, -3, time.time())
+
+    nodePos = constructPos()
+
+    kmeans = KMeans(n_clusters=3, random_state=0).fit(nodePos[1:, :])
+    color = np.concatenate(([0], kmeans.labels_ + 1))
+
+
+    def draw():
+        plt.figure(figsize=(10,10))
+
+        G, nodePos = constructGraph()
+
+        nx.draw_networkx_nodes(G, nodePos, node_color=color, node_size=1000, alpha=0.6)
+        nx.draw_networkx_edges(G, nodePos, alpha=0.1)
+        nx.draw_networkx_labels(G, nodePos, labels=nx.get_node_attributes(G, "label"))
+
+        plt.axis('off')
+
+        fig = plt.gcf()
+        buf = io.BytesIO()
+        fig.savefig(buf, format='png')
+        buf.seek(0)
+        string = base64.b64encode(buf.read())
+
+        uri = 'data:image/png;base64,' + urllib.parse.quote(string)
+        html = '<img src=" %s " height="600px" />' % uri
+
+        return html
+
+    html = draw()
+
+    return render(request, 'delivery.html', {
+        'img': html
+    })

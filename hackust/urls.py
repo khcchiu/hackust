@@ -28,4 +28,5 @@ urlpatterns = [
     path('shift/', shift, name='shift'),
     path('shift/submit_availability', availability_rule, name='availability_rule'),
     path('shift/view_availability', availability_viewer, name='availability_viewer'),
+    path('delivery/', food_delivery, name='delivery'),
 ]
